@@ -19,5 +19,10 @@ def user(name):
     return render_template('user.html', name=name)
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return '<h1>Not found!</h1>', 404
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
