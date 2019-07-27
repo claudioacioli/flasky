@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ def index():
 
 @app.route('/user/<name>')
 def user(name):
-    return '<h1>Hello, {}</h1>'.format(name)
+    return render_template('index.html', name=name)
 
 
 if __name__ == '__main__':
