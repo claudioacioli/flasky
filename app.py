@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Flask, request, render_template
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
@@ -10,10 +12,8 @@ moment = Moment(app)
 @app.route('/')
 def index():
     user_agent = request.headers.get('User-Agent')
-    output = '<h1>Hello World!</h1>'
-    output += '<hr />'
-    output += '<p>{}</p>'.format(user_agent)
-    return output
+    print(user_agent)
+    return render_template('index.html', current_time=datetime.utcnow())
 
 
 @app.route('/user/<name>')
