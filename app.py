@@ -8,6 +8,9 @@ app = Flask(__name__)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 
+# Configura chave secreta
+app.config['SECRET_KEY'] = 'Hard to guees string'
+
 
 @app.route('/')
 def index():
