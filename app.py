@@ -11,12 +11,14 @@ from flask import \
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from forms import NameForm
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 db = SQLAlchemy(app)
+migrage = Migrate(app, db)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
