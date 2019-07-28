@@ -30,6 +30,7 @@ app.config['MAIL_USERNAME'] = os.environ.get('FLASKY_MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('FLASKY_MAIL_PASSWORD')
 app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
 app.config['FLASKY_MAIL_SENDER'] = 'Flasky Admin <flasky@flasky.com>'
+app.config['FLASKY_ADMIN'] = os.environ.get('FLASKY_ADMIN')
 
 bootstrap = Bootstrap(app)
 moment = Moment(app)
@@ -71,6 +72,8 @@ def index():
             db.session.add(user)
             db.session.commit()
             session['know'] = False
+            if app.config['FLASKY_ADMIN']:
+                send_email(app.config['FLASKY_ADMIN'], 'New user', 'mail/new_user', user=user)
         else:
             session['know'] = True
         session['name'] = form.name.data
@@ -107,7 +110,7 @@ def make_shell_context():
 
 def send_email(to, subject, template, **kwargs):
     msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + subject,
-                  sender=app.config['FLASK_MAIL_SENDER'], recipients=[to])
+                  sender=app.config['FLASKY_MAIL_SENDER'], recipients=[to])
     msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template(template + '.html', **kwargs)
     mail.send(msg)
