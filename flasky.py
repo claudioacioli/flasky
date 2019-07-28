@@ -11,6 +11,7 @@ migrate = Migrate(app, db)
 def make_shell_context():
     return dict(db=db, User=User, Role=Role)
 
+
 @app.cli.command()
 def test():
     """Exceuta testes"""
