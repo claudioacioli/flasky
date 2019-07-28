@@ -12,20 +12,28 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_mail import Mail
 from forms import NameForm
-
-app = Flask(__name__)
-bootstrap = Bootstrap(app)
-moment = Moment(app)
-db = SQLAlchemy(app)
-migrage = Migrate(app, db)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+app = Flask(__name__)
 # Configura chave secreta
 app.config['SECRET_KEY'] = 'Hard to guees string'
+# Configura
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('FLASKY_MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('FLASKY_MAIL_PASSWORD')
+
+bootstrap = Bootstrap(app)
+moment = Moment(app)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+mail = Mail(app)
 
 
 class Role(db.Model):
