@@ -39,7 +39,8 @@ class User(UserMixin, db.Model):
 @login_manager.user_loader
 def load_user(user_id):
     """
-    Extensao flask login usará essa função quando precisar saber quem é o usuario logado
+    Extensao flask login usará essa função quando precisar
+    saber quem é o usuario logado
     Passará user_id em formato string
     Função carrega o usuario do banco e o retorna
     """
