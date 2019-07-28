@@ -1,16 +1,43 @@
+import os
 from datetime import datetime
 
 from flask import Flask, request, render_template
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
+from flask_sqlalchemy import SQLAlchemy
 from forms import NameForm
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
+db = SQLAlchemy(app)
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Configura chave secreta
 app.config['SECRET_KEY'] = 'Hard to guees string'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+class Role(db.Model):
+    __tablename__ = 'role'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    users = db.relationship('User', backref='role')
+
+    def __repr__(self):
+        return '<Role %r>' % self.name
+
+
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True, index=True)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+
+    def __repr__(self):
+        return '<User %r>' % self.username
 
 
 @app.route('/', methods=['GET', 'POST'])
