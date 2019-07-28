@@ -1,4 +1,0 @@
-Novo usuario cadastrado
-
-id: {{user.id}}
-username: {{user.name}}
