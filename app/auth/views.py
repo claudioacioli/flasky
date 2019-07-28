@@ -1,5 +1,5 @@
 from flask import render_template, request, url_for, redirect, flash
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 from . import auth as app_auth
 from ..models import User
 from .forms import LoginForm
@@ -18,3 +18,11 @@ def login():
             return redirect(next)
         flash('Usuario inválido')
     return render_template('auth/login.html', form=form)
+
+
+@app_auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Você saiu do sistema.')
+    return redirect(url_for('main.index'))
