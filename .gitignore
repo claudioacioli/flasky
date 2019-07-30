@@ -4,3 +4,4 @@ __pycache__/
 *.sqlite
 app.txt
 init.bat
+init.sh
