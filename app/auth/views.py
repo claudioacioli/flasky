@@ -2,7 +2,7 @@ from flask import render_template, request, url_for, redirect, flash
 from flask_login import login_user, logout_user, login_required
 from . import auth as app_auth
 from ..models import User
-from .forms import LoginForm
+from .forms import LoginForm, RegistrationForm
 
 
 @app_auth.route('/login', methods=['GET', 'POST'])
@@ -26,3 +26,9 @@ def logout():
     logout_user()
     flash('Você saiu do sistema.')
     return redirect(url_for('main.index'))
+
+
+@app_auth.route('/register')
+def register():
+    form = RegistrationForm()
+    return render_template('auth/register.html', form=form)
