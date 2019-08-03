@@ -44,7 +44,7 @@ def register():
         send_email(
             user.email,
             'Confirme sua conta no Flasky',
-            'auth/email/confim',
+            'auth/email/confirm',
             user=user,
             token=token
         )
