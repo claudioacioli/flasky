@@ -40,6 +40,7 @@ def register():
         user.password = form.password.data
         db.session.add(user)
         db.session.commit()
+        token = user.generate_confirmation_token()
         send_email(
             user.email,
             'Confirme sua conta no Flasky',
