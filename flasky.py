@@ -3,7 +3,7 @@ from app import create_app, db
 from app.models import User, Role
 from flask_migrate import Migrate
 
-app = create_app(os.getenv('FLASKY_CONFIG') or 'default')
+app = create_app(os.getenv('FLASK_ENV') or 'default')
 migrate = Migrate(app, db)
 
 
