@@ -1,5 +1,5 @@
 from flask import render_template, request, url_for, redirect, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from . import auth as app_auth
 from .. import db
 from ..models import User
@@ -39,7 +39,7 @@ def register():
         user.username = form.username.data
         user.password = form.password.data
         db.session.add(user)
-        db.session.commit() 
+        db.session.commit()
         send_email(
             user.email,
             'Confirme sua conta no Flasky',
@@ -50,3 +50,17 @@ def register():
         flash('Um email de confirmacao foi enviado para voce!')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
+
+
+@app_auth.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('main.index'))
+    if current_user.confirm(token):
+        db.session.commit()
+        flash('Parabens! conta confirmada')
+    else:
+        flask('Link de confirmacao invalido')
+    return redirect(url_for('main.index'))
+
