@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required
 from . import auth as app_auth
 from .. import db
 from ..models import User
+from ..email import send_email
 from .forms import LoginForm, RegistrationForm
 
 
@@ -38,7 +39,14 @@ def register():
         user.username = form.username.data
         user.password = form.password.data
         db.session.add(user)
-        db.session.commit()
-        flash('Usuario registrado com sucesso')
+        db.session.commit() 
+        send_email(
+            user.email,
+            'Confirme sua conta no Flasky',
+            'auth/email/confim',
+            user=user,
+            token=token
+        )
+        flash('Um email de confirmacao foi enviado para voce!')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
