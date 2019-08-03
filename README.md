@@ -35,7 +35,7 @@ Set MAIL_USE_TLS=1
 Set MAIL_USERNAME=usermail
 Set MAIL_PASSWORD=userpassword
 Set FLASKY_DEV_DATABASE_URI=data-dev.sqlite
-Set FLASKY_CONFIG=development
+Set FLASKY_ENV=development
 SET FLASK_DEBUG=1
 Set FLASK_APP=flasky.py
 ```
