@@ -7,6 +7,15 @@ from ..email import send_email
 from .forms import LoginForm, RegistrationForm
 
 
+@app_auth.before_app_request
+def before_request():
+    if current_user.is_authenticated \
+            and not current_user.confirmed \
+            and request.blueprint != 'auth' \
+            and request.endpoint != 'static':
+        return redirect(url_for('auth.unconfirmed'))
+
+
 @app_auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -53,6 +62,28 @@ def register():
     return render_template('auth/register.html', form=form)
 
 
+@app_auth.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for('main.index'))
+    return render_template('auth/unconfirmed.html')
+
+
+@app_auth.route('/confirm')
+@login_required
+def resend_confirm():
+    token = current_user.generate_confirmation_token()
+    send_email(
+        current_user.email,
+        'Confirme sua conta no Flasky',
+        'auth/email/confirm',
+        user=current_user,
+        token=token
+    )
+    flash('Um novo email de confirmacao foi enviado para sua conta')
+    return redirect(url_for('main.index'))
+
+
 @app_auth.route('/confirm/<token>')
 @login_required
 def confirm(token):
@@ -64,4 +95,3 @@ def confirm(token):
     else:
         flask('Link de confirmacao invalido')
     return redirect(url_for('main.index'))
-
