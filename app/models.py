@@ -40,6 +40,32 @@ class Role(db.Model):
     def has_permission(self, perm):
         return self.permissions & perm == perm
 
+    @staticmethod
+    def insert_roles():
+        roles = {}
+        # Explicacao do codigo abaixo*****************************************
+        # [:]  - Cria uma lista com outra como referencia
+        # + [] - Adiciona item a nova lista
+        # ********************************************************************
+        roles['User'] = [
+            Permission.FOLLOW,
+            Permission.COMMENT,
+            Permission.WRITE
+        ]
+        roles['Moderator'] = roles['User'][:] + [Permission.MODERATE]
+        roles['Administrator'] = roles['Moderator'][:] + [Permission.ADMIN]
+        default_role = 'User'
+        for r in roles:
+            role = Role.query.filter_by(name=r).first()
+            if role is None:
+                role = Role(name=r)
+            role.reset_permissions()
+            for perm in roles[r]:
+                role.add_permission(perm)
+            role.default = (role.name == default_role)
+            db.session.add(role)
+        db.session.commit()
+
     def __repr__(self):
         return '<Role %r>' % self.name
 
