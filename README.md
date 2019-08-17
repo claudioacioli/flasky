@@ -1,5 +1,5 @@
 # Flasky
-Este projeto foi criado para apredizagem seguindo os capítulos de 1 a 7, primeira parte, do livro [Desenvolvimento Web com Flask](https://novatec.com.br/livros/desenvolvimento-web-com-flask/)
+Este projeto foi criado para apredizagem seguindo os capÃ­tulos de 1 a 7, primeira parte, do livro [Desenvolvimento Web com Flask](https://novatec.com.br/livros/desenvolvimento-web-com-flask/)
 
 ## Instalação e Execução
 Para executar este projeto, após o clone, acesse a pasta do repositório e execute
@@ -42,14 +42,14 @@ Set FLASK_APP=flasky.py
 
 ## Testes
 
-Os comandos necess�rios para execuç� dos testes s�o os seguintes:
+Os comandos necessários para execução dos testes são os seguintes:
 
 - Ative o ambinte virtual
 ```
 venv\Scripts\activate
 ```
 
-- Configure as vari�veis de ambiente
+- Configure as variáveis de ambiente
 ```
 init.bat
 ```
@@ -58,4 +58,3 @@ init.bat
 ```
 flask test
 ```
-
