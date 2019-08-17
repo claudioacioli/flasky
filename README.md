@@ -39,3 +39,23 @@ Set FLASKY_ENV=development
 SET FLASK_DEBUG=1
 Set FLASK_APP=flasky.py
 ```
+
+## Testes
+
+Os comandos necess√rios para execu√ß√ dos testes s√o os seguintes:
+
+- Ative o ambinte virtual
+```
+venv\Scripts\activate
+```
+
+- Configure as vari√veis de ambiente
+```
+init.bat
+```
+
+- Execute o comando de testes
+```
+flask test
+```
+
