@@ -58,3 +58,16 @@ init.bat
 ```
 flask test
 ```
+
+## Migrate
+
+Ao alterar as classes de modelo, é necessário gerar as "migrations", por tanto use o seguinte comando
+
+```
+flask db migrate -m"adiciona uma mensagem relevante a alteração de banco de dados"
+```
+
+Após esse passo, é necessário atualizar o banco com o seguinte comando:
+```
+flask db upgrade
+```
