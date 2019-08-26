@@ -8,10 +8,11 @@ from flask import \
     current_app
 from flask_login import login_required, current_user    
 from . import main as app_main
-from .forms import NameForm, EditProfileForm
+from .forms import NameForm, EditProfileForm, EditProfileAdminForm
 from .. import db
 from ..models import User
 from ..email import send_email
+from ..decorators import admin_required
 
 
 @app_main.route('/', methods=['GET', 'POST'])
@@ -63,3 +64,11 @@ def edit_profile():
     form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', form=form)
 
+
+@app_main.route('/edit-profile/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def edit_profile_admin(id):
+    user = User.query.get_or_404(id)
+    form = EditProfileAdminForm(user=user)
+    return render_template('edit_profile.html', form=form, user=user)
