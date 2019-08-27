@@ -94,5 +94,5 @@ def confirm(token):
         db.session.commit()
         flash('Parabens! conta confirmada')
     else:
-        flask('Link de confirmacao invalido')
+        flash('Link de confirmacao invalido')
     return redirect(url_for('main.index'))
