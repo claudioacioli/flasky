@@ -10,36 +10,26 @@ from flask import (
 )
 from flask_login import login_required, current_user
 from . import main as app_main
-from .forms import NameForm, EditProfileForm, EditProfileAdminForm
+from .forms import NameForm, EditProfileForm, EditProfileAdminForm, PostForm
 from .. import db
-from ..models import User, Role
+from ..models import User, Role, Permission, Post
 from ..email import send_email
 from ..decorators import admin_required
 
 
 @app_main.route('/', methods=['GET', 'POST'])
 def index():
-    form = NameForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.name.data).first()
-        if user is None:
-            user = User(username=form.name.data)
-            db.session.add(user)
-            db.session.commit()
-            session['know'] = False
-            if current_app.config['FLASKY_ADMIN']:
-                send_email(current_app.config['FLASKY_ADMIN'], 'New user', 'mail/new_user', user=user)
-        else:
-            session['know'] = True
-        session['name'] = form.name.data
-        form.name.data = ''
-        redirect(url_for('.index'))
+    form = PostForm()
+    if current_user.can(Permission.WRITE) and form.validate_on_submit():
+        post = Post(body=form.body.data, author=current_user._get_current_object())
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('.index'))
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template(
         'index.html',
-        current_time=datetime.utcnow(),
         form=form,
-        name=session.get('name'),
-        know=session.get('know', False)
+        posts=posts
     )
 
 
