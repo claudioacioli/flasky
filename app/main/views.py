@@ -1,19 +1,15 @@
-from datetime import datetime
-
 from flask import (
     render_template,
-    session,
     redirect,
     url_for,
-    current_app,
+    abort,
     flash
 )
 from flask_login import login_required, current_user
 from . import main as app_main
-from .forms import NameForm, EditProfileForm, EditProfileAdminForm, PostForm
+from .forms import EditProfileForm, EditProfileAdminForm, PostForm
 from .. import db
 from ..models import User, Role, Permission, Post
-from ..email import send_email
 from ..decorators import admin_required
 
 
