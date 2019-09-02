@@ -1,9 +1,11 @@
 from flask import (
+    current_app,
     render_template,
     redirect,
     url_for,
     abort,
-    flash
+    flash,
+    request
 )
 from flask_login import login_required, current_user
 from . import main as app_main
@@ -21,11 +23,19 @@ def index():
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('.index'))
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    page = request.args.get('page', 1, type=int)
+    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
+        page,
+        per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+        error_out=False
+    )
+    posts = pagination.items
+    # posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template(
         'index.html',
         form=form,
-        posts=posts
+        posts=posts,
+        pagination=pagination
     )
 
 
