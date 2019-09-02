@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, SelectField, BooleanField, ValidationError
 from wtforms.validators import DataRequired, Length, Email, Regexp
-from ..models import Role
+from ..models import Role, User
 
 
 class NameForm(FlaskForm):
@@ -38,6 +38,7 @@ class EditProfileAdminForm(FlaskForm):
     def validate_username(self, field):
         if field.data != self.user.username and User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use')
+
 
 class PostForm(FlaskForm):
     body = TextAreaField("O que vc esta pensando?", validators=[DataRequired()])
