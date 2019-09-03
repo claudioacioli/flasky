@@ -12,7 +12,6 @@
             <a href="{{ url_for('.user', username=post.author.username) }}">{{ post.author.username }}</a>
           </div>
           <div class="post-body">
-              {{ post.body }}
               {% if post.body_html %}
                   {{ post.body_html | safe }}
               {% else %}
