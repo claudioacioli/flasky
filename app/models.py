@@ -193,7 +193,7 @@ class User(UserMixin, db.Model):
     def is_following(self, user):
         if user.id is None:
             return False
-        return self.followed.filter_by(folowed_id=user.id).first() is not None
+        return self.followed.filter_by(followed_id=user.id).first() is not None
 
     def is_following_by(self, user):
         if user.id is None:
