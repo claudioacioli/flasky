@@ -5,7 +5,8 @@ from flask import (
     url_for,
     abort,
     flash,
-    request
+    request,
+    make_response
 )
 from flask_login import login_required, current_user
 from . import main as app_main
@@ -23,8 +24,17 @@ def index():
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('.index'))
+
+    show_followed = False
+    if current_user.is_authenticated:
+        show_followed = bool(request.cookies.get('show_followed', ''))
+    if show_followed:
+        query = current_user.followed_posts
+    else:
+        query = Post.query
+
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
+    pagination = query.order_by(Post.timestamp.desc()).paginate(
         page,
         per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False
@@ -35,8 +45,25 @@ def index():
         'index.html',
         form=form,
         posts=posts,
-        pagination=pagination
+        pagination=pagination,
+        show_followed=show_followed
     )
+
+
+@app_main.route('/all')
+@login_required
+def show_all():
+    response = make_response(redirect(url_for('.index')))
+    response.set_cookie('show_followed', '', max_age=30*24*60*60) #30 dias
+    return response
+
+
+@app_main.route('/followed')
+@login_required
+def show_followed():
+    response = make_response(redirect(url_for('.index')))
+    response.set_cookie('show_followed', '1', max_age=30*24*60*60) #30 dias
+    return response
 
 
 @app_main.route('/user/<username>')
@@ -173,4 +200,3 @@ def followed_by(username):
     print(pagination.items)
     follows = [{'user': item.followed, 'timestamp': item.timestamp} for item in pagination.items]
     return render_template('followers.html', user=user, title="Followers of", endpoint='.followers', pagination=pagination, follows=follows)
-
