@@ -18,7 +18,7 @@ Configure o banco de dados com o comando:
 flask db upgrade
 ```
 
-Execute o projeto com>
+Execute o projeto com:
 ```
 python flasky.py
 ```
@@ -28,16 +28,17 @@ Para este projeto são criadas algumas variaveis de ambiente. A sugestão seria 
 Segue conteúdo sugerido:
 
 ```
-Set SECRET_KEY=sua chave secreta
-Set MAIL_SERVER=smtp.googlemail.com
-Set MAIL_PORT=587
-Set MAIL_USE_TLS=1
-Set MAIL_USERNAME=usermail
-Set MAIL_PASSWORD=userpassword
-Set FLASKY_DEV_DATABASE_URI=data-dev.sqlite
-Set FLASKY_ENV=development
+SET SECRET_KEY=sua chave secreta
+SET MAIL_SERVER=smtp.googlemail.com
+SET MAIL_PORT=587
+SET MAIL_USE_TLS=1
+SET MAIL_USERNAME=usermail
+SET MAIL_PASSWORD=userpassword
+SET FLASKY_DEV_DATABASE_URI=sqlite:///C:\\flasky\\data-dev.sqlite
+SET FLASK_ENV=development
 SET FLASK_DEBUG=1
-Set FLASK_APP=flasky.py
+SET FLASK_APP=flasky.py
+SET FLASKY_ADMIN=admin@email.com
 ```
 
 ## Testes
@@ -70,4 +71,17 @@ flask db migrate -m"adiciona uma mensagem relevante a alteração de banco de da
 Após esse passo, é necessário atualizar o banco com o seguinte comando:
 ```
 flask db upgrade
+```
+
+## Faker
+
+A dependência de projeto ``faker`` ajuda a criar usuarios e postagens fake. 
+Após instalar a dependência, execute os comandos:
+
+```
+// Atenção, código copiado da página 183
+(venv) $ flask shell
+>>> from app import fake
+>>> fake.users(100)
+>>> fake.posts(100)
 ```
