@@ -1,26 +1,26 @@
 # Flasky
-Este projeto foi criado para apredizagem seguindo os capÃ­tulos de 1 a 7, primeira parte, do livro [Desenvolvimento Web com Flask](https://novatec.com.br/livros/desenvolvimento-web-com-flask/)
+Este projeto foi criado para apredizagem seguindo os capítulos de 1 a 7, primeira parte, do livro [Desenvolvimento Web com Flask](https://novatec.com.br/livros/desenvolvimento-web-com-flask/)
 
 ## Instalação e Execução
 Para executar este projeto, após o clone, acesse a pasta do repositório e execute
 ```
-python -m venv venv
+ $ python -m venv venv
 ```
 Certifique-se que o python esta instalado e adicionado a sua variável path.
 
 Instale as dependências com o comando:
 ```
-pip install -r requirements.txt
+(venv) $ pip install -r requirements.txt
 ```
 
-Configure o banco de dados com o comando:
+Inicialize o banco de dados com o comando:
 ```
-flask db upgrade
+(venv) $ flask db upgrade
 ```
 
 Execute o projeto com:
 ```
-python flasky.py
+(venv) $ python flasky.py
 ```
 
 ## Utilitario Bash
@@ -47,17 +47,17 @@ Os comandos necessários para execução dos testes são os seguintes:
 
 - Ative o ambinte virtual
 ```
-venv\Scripts\activate
+(venv) $ venv\Scripts\activate
 ```
 
 - Configure as variáveis de ambiente
 ```
-init.bat
+(venv) $ init.bat
 ```
 
 - Execute o comando de testes
 ```
-flask test
+(venv) $ flask test
 ```
 
 ## Migrate
@@ -65,12 +65,12 @@ flask test
 Ao alterar as classes de modelo, é necessário gerar as "migrations", por tanto use o seguinte comando
 
 ```
-flask db migrate -m"adiciona uma mensagem relevante a alteração de banco de dados"
+(venv) $ flask db migrate -m"adiciona uma mensagem relevante a alteração de banco de dados"
 ```
 
 Após esse passo, é necessário atualizar o banco com o seguinte comando:
 ```
-flask db upgrade
+(venv) $ flask db upgrade
 ```
 
 ## Faker
