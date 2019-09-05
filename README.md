@@ -1,5 +1,5 @@
 # Flasky
-Este projeto foi criado para apredizagem seguindo os capítulos de 1 a 7, primeira parte, do livro [Desenvolvimento Web com Flask](https://novatec.com.br/livros/desenvolvimento-web-com-flask/)
+Este projeto foi criado seguindo o livro [Desenvolvimento Web com Flask](https://novatec.com.br/livros/desenvolvimento-web-com-flask/)
 
 ## Instalação e Execução
 Para executar este projeto, após o clone, acesse a pasta do repositório e execute
