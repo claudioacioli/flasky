@@ -1,0 +1,28 @@
+from flask import request, jsonify, url_for
+from . import api as app_api
+from .decorators import permission_required
+from .. import db
+from ..models import Post, Permission
+
+
+@app_api.route('/posts/', methods=['POST'])
+@permission_required(Permission.WRITE)
+def new_post():
+    post = Post.from_json(request.json)
+    post.author = g.current_user
+    db.session.add(post)
+    db.session.commit()
+    return jsonify(post.to_json()), 201, {'Location': url_for('api.get_post', id=post.id)}
+
+
+@app_api.route('/posts/', methods=['GET'])
+def get_posts():
+    posts = Post.query.all()
+    return jsonify({'posts': [posts.to_json() for post in posts]})
+
+
+@app_api.route('/posts/<int:id>', methods=['GET'])
+def get_post(id):
+    post = Post.query.get_or_404(id)
+    return jsonify(post.to_json())
+
