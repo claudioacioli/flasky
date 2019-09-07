@@ -1,12 +1,13 @@
 import hashlib
 import bleach
 from datetime import datetime
-from flask import current_app
+from flask import current_app, url_for
 from markdown import markdown
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
 from . import db, login_manager
+from .exceptions import ValidationError
 
 
 class Permission:
@@ -227,6 +228,17 @@ class User(UserMixin, db.Model):
                 db.session.add(user)
         db.session.commit()
 
+    def to_json(self):
+        return {
+            'url': url_for('api.get_user', id=self.id),
+            'username': self.username,
+            'member_since': self.member_since,
+            'last_seen': self.last_seen,
+            'posts_url': url_for('api.get_user_posts', id=self.id),
+            'followed_posts_url': url_for('api.get_user_followed_posts', id=self.id),
+            'post_count': self.posts.count()
+        }
+
     def __repr__(self):
         return '<User %r>' % self.username
 
@@ -263,6 +275,27 @@ class Post(db.Model):
                 strip=True
             )
         )
+
+    def to_json(self):
+        return {
+            'url': url_for('api.get_post', id=self.id),
+            'body': self.body,
+            'body_html': self.body_html,
+            'timestamp': self.timestamp,
+            'author_url': url_for('api.get_user', id=self.author_id),
+            'comments_url': url_for('api.get_post_comments', id=self.id),
+            'comment_count': self.comments.count()
+        }
+
+    @staticmethod
+    def from_json(json_post):
+        body = json_post.get('body')
+        if body is None or body == '':
+            raise ValidationError('Json informado não corresponde ao esperado')
+        return Post(body=body)
+
+    def __repr__(self):
+        return '<Post %r>' % self.body
 
 
 class Comment(db.Model):
