@@ -2,6 +2,7 @@ from flask import jsonify
 from . import api as app_api
 from ..exceptions import ValidationError
 
+
 def bad_request(message):
     response = jsonify({'error': 'not found', 'message': message})
     response.status_code = 400
