@@ -5,7 +5,7 @@ from ..models import User, Post
 
 
 def _get_posts(posts, page):
-    pagination = posts.pagination(
+    pagination = posts.paginate(
         page,
         per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False
@@ -31,11 +31,10 @@ def get_user(id):
 def get_user_posts(id):
     user = User.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)
-    return _get_posts(Post.query.filter_by(author_id=user.id), page)
+    return _get_posts(user.posts, page)
 
 
 @app_api.route('/users/<int:id>/timeline/')
-@permission_required
 def get_user_followed_posts(id):
     user = User.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)
