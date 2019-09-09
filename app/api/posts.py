@@ -32,7 +32,7 @@ def get_posts():
     if pagination.has_next:
         next = url_for('api.get_posts', page=page+1)
     return jsonify({
-        'posts': [posts.to_json() for post in posts],
+        'posts': [post.to_json() for post in posts],
         'prev_url': prev,
         'next_url': next,
         'count': pagination.total
