@@ -45,7 +45,7 @@ def get_post(id):
     return jsonify(post.to_json())
 
 
-@app_api.route('/posts/<int:id>', method=['PUT'])
+@app_api.route('/posts/<int:id>', methods=['PUT'])
 @permission_required
 def edit_post(id):
     post = Post.query.get_or_404(id)
