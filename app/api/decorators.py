@@ -1,3 +1,4 @@
+from flask import g
 from functools import wraps
 from .errors import forbidden
 
