@@ -291,7 +291,7 @@ class Post(db.Model):
     def from_json(json_post):
         body = json_post.get('body')
         if body is None or body == '':
-            raise ValidationError('Json informado não corresponde ao esperado')
+            raise ValidationError('JSON informado não corresponde ao esperado')
         return Post(body=body)
 
     def __repr__(self):
@@ -307,6 +307,13 @@ class Comment(db.Model):
     disabled = db.Column(db.Boolean)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    @staticmethod
+    def from_json(json_comment):
+        body = json_comment.get('body')
+        if body is None or body == '':
+            raise ValidationError('JSON informado não corresponde ao esperado')
+        return Comment(body=body)
 
     def to_json(self):
         return {
