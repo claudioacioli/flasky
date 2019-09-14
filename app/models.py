@@ -313,6 +313,7 @@ class Comment(db.Model):
             'body': self.body,
             'body_html': self.body_html,
             'timestamp': self.timestamp,
+            'comment_url': url_for('api.get_comment', id=self.id),
             'author_url': url_for('api.get_user', id=self.author_id),
             'post_url': url_for('api.get_post', id=self.post_id)
         }
