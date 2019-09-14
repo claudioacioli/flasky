@@ -1,7 +1,6 @@
 from flask import jsonify, request, current_app, url_for
 from . import api as app_api
-from .decorators import permission_required
-from ..models import User, Post
+from ..models import User
 
 
 def _get_posts(posts, page):

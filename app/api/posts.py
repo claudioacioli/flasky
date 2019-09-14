@@ -3,7 +3,7 @@ from . import api as app_api
 from .errors import forbidden
 from .decorators import permission_required
 from .. import db
-from ..models import Post, Comment, Permission
+from ..models import Post, Permission
 
 
 @app_api.route('/posts/', methods=['POST'])
