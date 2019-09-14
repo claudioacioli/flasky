@@ -312,7 +312,9 @@ class Comment(db.Model):
         return {
             'body': self.body,
             'body_html': self.body_html,
-            'timestamp': self.timestamp
+            'timestamp': self.timestamp,
+            'author_url': url_for('api.get_user', id=self.author_id),
+            'post_url': url_for('api.get_post', id=self.post_id)
         }
 
     @staticmethod
