@@ -1,9 +1,9 @@
-from flask import request, jsonify, url_for, current_app
+from flask import request, jsonify, url_for, current_app, g
 from . import api as app_api
 from .errors import forbidden
 from .decorators import permission_required
 from .. import db
-from ..models import Post, Permission
+from ..models import Post, Permission, Comment
 
 
 @app_api.route('/posts/', methods=['POST'])
@@ -63,6 +63,18 @@ def get_post_comments(id):
         'next_url': next,
         'count': pagination.total
     })
+
+
+@app_api.route('/posts/<int:id>/comments/', methods=['POST'])
+@permission_required(Permission.WRITE)
+def new_comment(id):
+    post = Post.query.get_or_404(id)
+    comment = Comment.from_json(request.json)
+    comment.post = post
+    comment.author = g.current_user
+    db.session.add(comment)
+    db.session.commit()
+    return jsonify(comment.to_json()), 201, {'Location': url_for('api.get_comment', id=comment.id)}
 
 
 @app_api.route('/posts/<int:id>', methods=['PUT'])
