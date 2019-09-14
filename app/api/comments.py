@@ -3,7 +3,7 @@ from . import api as app_api
 from ..models import Comment
 
 
-@app_api.route('/comments')
+@app_api.route('/comments/')
 def get_comments():
     page = request.args.get('page', 1, type=int)
     pagination = Comment.query.filter_by(disabled=False).paginate(
@@ -20,3 +20,9 @@ def get_comments():
         'next_url': next,
         'count': pagination.total
     })
+
+
+@app_api.route('/comments/<int:id>')
+def get_comment(id):
+    comment = Comment.query.get_or_404(id)
+    return jsonify(comment.to_json())
