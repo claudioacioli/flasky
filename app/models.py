@@ -308,6 +308,13 @@ class Comment(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
 
+    def to_json(self):
+        return {
+            'body': self.body,
+            'body_html': self.body_html,
+            'timestamp': self.timestamp
+        }
+
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = [
