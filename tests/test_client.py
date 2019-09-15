@@ -50,3 +50,8 @@ class FlaskClientTestCase(unittest.TestCase):
         user.confirm(token)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(re.search('Hello,\s+john!', response.get_data(as_text=True)))
+
+        # Faz logout
+        response = self.client.get('/auth/logout', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(re.search('Hello,\s+Stranger!', response.get_data(as_text=True)))
