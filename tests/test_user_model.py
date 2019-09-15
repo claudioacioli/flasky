@@ -1,7 +1,7 @@
 import unittest
 import time
 from app import db
-from app.models import User, Permission, AnonymousUser
+from app.models import User, Permission, AnonymousUser, Follow
 
 
 class UserModelTestCase(unittest.TestCase):
@@ -31,6 +31,8 @@ class UserModelTestCase(unittest.TestCase):
         db.session.commit()
         token = u.generate_confirmation_token()
         self.assertTrue(u.confirm(token))
+        ff = Follow.query.filter_by(follower_id=u.id).one()
+        db.session.delete(ff)
         db.session.delete(u)
         db.session.commit()
 
@@ -42,17 +44,26 @@ class UserModelTestCase(unittest.TestCase):
         db.session.commit()
         token = u1.generate_confirmation_token()
         self.assertFalse(u2.confirm(token))
+
+        ff1 = Follow.query.filter_by(follower_id=u1.id).one()
+        ff2 = Follow.query.filter_by(follower_id=u2.id).one()
+        db.session.delete(ff1)
+        db.session.delete(ff2)
+
         db.session.delete(u2)
         db.session.delete(u1)
         db.session.commit()
     
     def test_expired_confirmation_token(self):
-        u = User(username='teste gato', email='gato@teste.com', password='gato')
+        u = User(username='teste galinha', email='galinha@teste.com', password='galinha')
         db.session.add(u)
         db.session.commit()
         token = u.generate_confirmation_token(1)
+        print(token)
         time.sleep(2)
         self.assertFalse(u.confirm(token))
+        ff = Follow.query.filter_by(follower_id=u.id).one()
+        db.session.delete(ff)
         db.session.delete(u)
         db.session.commit()
 
@@ -63,6 +74,10 @@ class UserModelTestCase(unittest.TestCase):
         self.assertTrue(u.can(Permission.WRITE))
         self.assertFalse(u.can(Permission.MODERATE))
         self.assertFalse(u.can(Permission.ADMIN))
+        ff = Follow.query.filter_by(follower_id=u.id).one()
+        db.session.delete(ff)
+        db.session.delete(u)
+        db.session.commit()
 
     def test_anonymous_user(self):
         u = AnonymousUser()
