@@ -57,8 +57,10 @@ Os comandos necessários para execução dos testes são os seguintes:
 
 - Execute o comando de testes
 ```
-(venv) $ flask test
+(venv) $ flask test [--coverage]
 ```
+
+Use a flag `--coverage` caso queria uma análise de cobertura de testes.
 
 ## Migrate
 
