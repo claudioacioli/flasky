@@ -1,6 +1,7 @@
 .idea/
 venv/
 __pycache__/
+tmp/
 *.sqlite
 app.txt
 init.bat
