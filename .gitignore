@@ -6,3 +6,4 @@ tmp/
 app.txt
 init.bat
 init.sh
+*.exe
