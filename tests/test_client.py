@@ -39,4 +39,14 @@ class FlaskClientTestCase(unittest.TestCase):
         }, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(re.search('Hello,\s+john!', response.get_data(as_text=True)))
+
+        # Verifica pagina ainda não confirmado
         self.assertTrue('Voce ainda nao confirmou sua conta!' in response.get_data(as_text=True))
+
+        # Envia token confirmacao
+        user = User.query.filter_by(email='john@example.com').first()
+        token = user.generate_confirmation_token()
+        response = self.client.get('/auth/confirmation/{}'.format(token), follow_redirects=True)
+        user.confirm(token)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(re.search('Hello,\s+john!', response.get_data(as_text=True)))
